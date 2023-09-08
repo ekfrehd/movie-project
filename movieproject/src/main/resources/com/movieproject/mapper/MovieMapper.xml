@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- xml를 활용한 공통 코드 -->
+<mapper namespace="com.movieproject.mapper.MovieMapper"><!-- 호출 될 메서드의 인터페이스명 일치 -->
+
+<resultMap id="getMovieDetails" type="java.util.HashMap">
+  <result property="movie_id" column="movie_id" />
+  <result property="movie_title" column="movie_title" />
+  <result property="movie_image" column="movie_image" />
+  <result property="movie_content" column="movie_content" />
+  <result property="movie_relaseyear" column="movie_relaseyear" />
+  
+  <result property="director_name" column="director_name" />
+  <result property="actor_name" column="actor_name" />
+  <result property="genre" column="genre" />
+</resultMap>
+
+	<select id="getMovieDetails" resultMap="getMovieDetails">
+    SELECT m.*, g.genre, a.actor_name, d.director_name
+		FROM movie m
+		JOIN movie_genre mg ON m.movie_id = mg.movie_id
+		JOIN genre g ON mg.genre_id = g.genre_id
+		JOIN movie_actor ma ON m.movie_id = ma.movie_id
+		JOIN actor a ON ma.actor_id = a.actor_id
+		JOIN movie_director md ON m.movie_id = md.movie_id
+		JOIN director d ON md.director_id = d.director_id
+		WHERE m.movie_id = #{movie_id}
+</select>
+
+
+
+</mapper>
